@@ -1,5 +1,7 @@
-package com.example.tobysspring.tobySrc.chapter3.a;
+package com.example.tobysspring.tobySrc.chapter3.d;
 
+import com.example.tobysspring.tobySrc.chapter3.d.strategy.StatementStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.sql.DataSource;
@@ -10,24 +12,25 @@ import java.sql.SQLException;
 
 public class UserDao {
     private DataSource dataSource;
+    @Autowired
+    private JdbcContext jdbcContext;
 
     public UserDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = dataSource.getConnection();
+    public void add(final User user) throws ClassNotFoundException, SQLException {
+        StatementStrategy st = c -> {
+            PreparedStatement ps =
+                    c.prepareStatement("insert into users(id, name, password)" +
+                            " values(?, ?, ?)");
+            ps.setString(1, user.getId());
+            ps.setString(2, user.getName());
+            ps.setString(3, user.getPassword());
 
-        PreparedStatement ps = c.prepareStatement(
-                "insert into users(id, name, password) values(?, ?, ?)"
-        );
-        ps.setString(1, user.getId());
-        ps.setString(2, user.getName());
-        ps.setString(3, user.getPassword());
-
-        ps.executeUpdate();
-        ps.close();
-        c.close();
+            return ps;
+        };
+        this.jdbcContext.workWithStatementStrategy(st);
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
@@ -39,7 +42,6 @@ public class UserDao {
         ps.setString(1, id);
 
         ResultSet rs = ps.executeQuery();
-        rs.next();
         User user = null;
         if (rs.next()) {
             user = new User();
@@ -60,32 +62,7 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-        Connection c = null;
-        PreparedStatement ps = null;
-
-        try {
-            c = dataSource.getConnection();
-            ps = c.prepareStatement("delete from users");
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-
-                }
-            }
-            if (c != null) {
-                try {
-                    c.close();
-                } catch (SQLException e) {
-
-                }
-            }
-        }
-
+        this.jdbcContext.executeSql("delete from users");
     }
 
     public int getCount() throws SQLException {
