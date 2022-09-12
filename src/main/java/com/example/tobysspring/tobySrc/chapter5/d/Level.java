@@ -1,4 +1,4 @@
-package com.example.tobysspring.tobySrc.chapter5.b;
+package com.example.tobysspring.tobySrc.chapter5.d;
 
 public enum Level {
     GOLD(3, null), SILVER(2, GOLD), BASIC(1, SILVER);

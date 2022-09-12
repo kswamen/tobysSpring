@@ -1,5 +1,9 @@
-package com.example.tobysspring.tobySrc.chapter5.b;
+package com.example.tobysspring.tobySrc.chapter5.b.test;
 
+import com.example.tobysspring.tobySrc.chapter5.b.DaoFactory;
+import com.example.tobysspring.tobySrc.chapter5.b.Level;
+import com.example.tobysspring.tobySrc.chapter5.b.User;
+import com.example.tobysspring.tobySrc.chapter5.b.UserDao;
 import com.example.tobysspring.tobySrc.chapter5.b.exception.DuplicateUserIdException;
 import com.example.tobysspring.tobySrc.chapter5.b.service.UserService;
 import org.junit.jupiter.api.BeforeAll;

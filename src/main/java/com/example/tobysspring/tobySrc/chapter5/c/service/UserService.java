@@ -1,18 +1,27 @@
-package com.example.tobysspring.tobySrc.chapter5.b.service;
+package com.example.tobysspring.tobySrc.chapter5.c.service;
 
-import com.example.tobysspring.tobySrc.chapter5.b.Level;
-import com.example.tobysspring.tobySrc.chapter5.b.User;
-import com.example.tobysspring.tobySrc.chapter5.b.UserDao;
+import com.example.tobysspring.tobySrc.chapter5.c.Level;
+import com.example.tobysspring.tobySrc.chapter5.c.User;
+import com.example.tobysspring.tobySrc.chapter5.c.UserDao;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 public class UserService {
     public static final int MIN_LOGOUT_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
-    private final UserDao userDao;
+    UserDao userDao;
 
+    @Autowired
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public UserService() {
+
+    }
 //    public void upgradeLevels() {
 //        List<User> users = userDao.getAll();
 //        for (User user : users) {
@@ -49,7 +58,7 @@ public class UserService {
         }
     }
 
-    private void upgradeLevel(User user) {
+    protected void upgradeLevel(User user) {
         user.upgradeLevel();
         userDao.update(user);
     }
@@ -69,4 +78,5 @@ public class UserService {
         }
         userDao.add(user);
     }
+
 }

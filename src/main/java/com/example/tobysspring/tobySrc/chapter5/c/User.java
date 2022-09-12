@@ -1,4 +1,4 @@
-package com.example.tobysspring.tobySrc.chapter5.b;
+package com.example.tobysspring.tobySrc.chapter5.c;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

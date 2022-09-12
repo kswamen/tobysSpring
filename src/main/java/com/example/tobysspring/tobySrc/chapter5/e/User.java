@@ -1,4 +1,4 @@
-package com.example.tobysspring.tobySrc.chapter5.b;
+package com.example.tobysspring.tobySrc.chapter5.e;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,10 @@ public class User {
     String name;
 
     String password;
+
+
+
+    String Email;
 
     Level level;
     int Login;
@@ -54,6 +58,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public String getName() {

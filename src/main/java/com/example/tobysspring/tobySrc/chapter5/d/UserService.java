@@ -1,17 +1,34 @@
-package com.example.tobysspring.tobySrc.chapter5.b.service;
+package com.example.tobysspring.tobySrc.chapter5.d;
 
-import com.example.tobysspring.tobySrc.chapter5.b.Level;
-import com.example.tobysspring.tobySrc.chapter5.b.User;
-import com.example.tobysspring.tobySrc.chapter5.b.UserDao;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
-@RequiredArgsConstructor
 public class UserService {
     public static final int MIN_LOGOUT_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
-    private final UserDao userDao;
+    UserDao userDao;
+    DataSource dataSource;
+
+    @Autowired
+    public UserService(UserDao userDao, DataSource dataSource) {
+        this.userDao = userDao;
+        this.dataSource = dataSource;
+    }
+
+    public UserService() {
+
+    }
+
+//    @Autowired
+//    public void setDataSource(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
 
 //    public void upgradeLevels() {
 //        List<User> users = userDao.getAll();
@@ -49,17 +66,31 @@ public class UserService {
         }
     }
 
-    private void upgradeLevel(User user) {
+    protected void upgradeLevel(User user) {
         user.upgradeLevel();
         userDao.update(user);
     }
 
-    public void upgradeLevels() {
-        List<User> users = userDao.getAll();
-        for (User user : users) {
-            if (canUpgradeLevel(user)) {
-                upgradeLevel(user);
+    public void upgradeLevels() throws SQLException {
+        TransactionSynchronizationManager.initSynchronization();
+        Connection c = DataSourceUtils.getConnection(dataSource);
+        c.setAutoCommit(false);
+
+        try {
+            List<User> users = userDao.getAll();
+            for (User user : users) {
+                if (canUpgradeLevel(user)) {
+                    upgradeLevel(user);
+                }
             }
+            c.commit();
+        } catch (Exception e) {
+            c.rollback();
+            throw e;
+        } finally {
+            DataSourceUtils.releaseConnection(c, dataSource);
+            TransactionSynchronizationManager.unbindResource(this.dataSource);
+            TransactionSynchronizationManager.clearSynchronization();
         }
     }
 
@@ -69,4 +100,5 @@ public class UserService {
         }
         userDao.add(user);
     }
+
 }
