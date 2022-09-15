@@ -33,6 +33,7 @@ dependencies {
 	implementation 'javax.activation:activation:1.1.1'
 	// https://mvnrepository.com/artifact/org.springframework/spring-context-support
 	implementation 'org.springframework:spring-context-support'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
 }
 
