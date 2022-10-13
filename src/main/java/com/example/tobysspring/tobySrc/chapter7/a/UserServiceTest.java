@@ -1,4 +1,4 @@
-package com.example.tobysspring.tobySrc.chapter6.g;
+package com.example.tobysspring.tobySrc.chapter7.a;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DaoFactory.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-
+//@Transactional
 public class UserServiceTest {
     @Autowired
     private UserService userService;
@@ -41,6 +41,10 @@ public class UserServiceTest {
     @Autowired
     ApplicationContext context;
     List<User> users;
+
+
+    @Autowired
+    private TxTest tt;
 
     @BeforeEach
     public void setUp() {
@@ -142,6 +146,7 @@ public class UserServiceTest {
     
     @Test
     @DirtiesContext
+//    @Transactional
     public void upgradeAllOrNothing() {
         userDao.deleteAll();
         for (User user : users) {
@@ -152,13 +157,13 @@ public class UserServiceTest {
             this.testUserService.upgradeLevels();
             fail("TestUserServiceException expected");
         } catch (TestUserServiceException e) {
-
         }
 
         checkLevelUpgraded(users.get(1), false);
     }
 
     @Test
+//    @Transactional
     public void readOnlyTransactionAttribute() {
         assertThrows(TransientDataAccessResourceException.class, () ->
                 testUserService.getAll());
@@ -170,28 +175,7 @@ public class UserServiceTest {
 //                userService.getAll());
 //    }
 
-    static class TestUserServiceImpl extends UserServiceImpl {
-        private final String id = "madnite1";
 
-        public TestUserServiceImpl(UserDao userDao) {
-            super.setUserDao(userDao);
-        }
-
-        @Override
-        protected void upgradeLevel(User user) {
-            if (user.getId().equals(this.id)) {
-                throw new TestUserServiceException();
-            }
-            super.upgradeLevel(user);
-        }
-
-        public List<User> getAll() {
-            for (User user : super.getAll()) {
-                super.update(user);
-            }
-            return null;
-        }
-    }
 
     static class MockMailSender implements MailSender {
         private final List<String> requests = new ArrayList<>();

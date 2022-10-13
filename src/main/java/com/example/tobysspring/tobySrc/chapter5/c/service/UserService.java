@@ -6,6 +6,7 @@ import com.example.tobysspring.tobySrc.chapter5.c.UserDao;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
