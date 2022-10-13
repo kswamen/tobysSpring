@@ -1,10 +1,14 @@
-package com.example.tobysspring.tobySrc.chapter7.a;
+package com.example.tobysspring.tobySrc.chapter7.a.service;
 
+import com.example.tobysspring.tobySrc.chapter7.a.User;
+import com.example.tobysspring.tobySrc.chapter7.a.UserDao;
+import com.example.tobysspring.tobySrc.chapter7.a.service.UserServiceImpl;
+import com.example.tobysspring.tobySrc.chapter7.a.service.UserServiceTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-class TestUserServiceImpl extends UserServiceImpl {
+public class TestUserServiceImpl extends UserServiceImpl {
     private final String id = "madnite1";
 
     public TestUserServiceImpl(UserDao userDao) {
@@ -14,7 +18,7 @@ class TestUserServiceImpl extends UserServiceImpl {
     @Override
     protected void upgradeLevel(User user) {
         if (user.getId().equals(this.id)) {
-            throw new UserServiceTest.TestUserServiceException();
+            throw new TestUserServiceException();
         }
         super.upgradeLevel(user);
     }

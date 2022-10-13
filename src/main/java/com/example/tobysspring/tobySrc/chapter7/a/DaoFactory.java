@@ -1,6 +1,10 @@
 package com.example.tobysspring.tobySrc.chapter7.a;
 
 
+import com.example.tobysspring.tobySrc.chapter7.a.service.SimpleSqlService;
+import com.example.tobysspring.tobySrc.chapter7.a.service.SqlService;
+import com.example.tobysspring.tobySrc.chapter7.a.service.TestUserServiceImpl;
+import com.example.tobysspring.tobySrc.chapter7.a.service.UserServiceImpl;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.context.annotation.Bean;
@@ -9,14 +13,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import javax.sql.DataSource;
 import java.sql.Driver;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -123,7 +127,21 @@ public class DaoFactory {
 //    }
 
     @Bean
-    public TxTest txTest() {
-        return new TxTest();
+    public Map<String, String> sqlMap() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userAdd", "insert into users(id, name, password, level, login, recommend) " +
+                "values(?, ?, ?, ?, ?, ?)");
+        map.put("userGet", "select * from users where id = ?");
+        map.put("userGetAll", "select * from users order by id");
+        map.put("userDeleteAll", "delete from users");
+        map.put("userGetCount", "select count(*) from users");
+        map.put("userUpdate", "update users set name = ?, password = ?, level = ?, login = ?, " +
+                "recommend = ? where id = ?");
+        return map;
+    }
+
+    @Bean
+    public SqlService sqlService() {
+        return new SimpleSqlService();
     }
 }

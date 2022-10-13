@@ -1,5 +1,6 @@
-package com.example.tobysspring.tobySrc.chapter7.a;
+package com.example.tobysspring.tobySrc.chapter7.a.service;
 
+import com.example.tobysspring.tobySrc.chapter7.a.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

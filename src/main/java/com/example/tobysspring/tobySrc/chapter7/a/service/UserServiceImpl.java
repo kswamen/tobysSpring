@@ -1,9 +1,11 @@
-package com.example.tobysspring.tobySrc.chapter7.a;
+package com.example.tobysspring.tobySrc.chapter7.a.service;
 
+import com.example.tobysspring.tobySrc.chapter7.a.Level;
+import com.example.tobysspring.tobySrc.chapter7.a.User;
+import com.example.tobysspring.tobySrc.chapter7.a.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

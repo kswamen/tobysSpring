@@ -1,5 +1,9 @@
-package com.example.tobysspring.tobySrc.chapter7.a;
+package com.example.tobysspring.tobySrc.chapter7.a.service;
 
+import com.example.tobysspring.tobySrc.chapter7.a.DaoFactory;
+import com.example.tobysspring.tobySrc.chapter7.a.Level;
+import com.example.tobysspring.tobySrc.chapter7.a.User;
+import com.example.tobysspring.tobySrc.chapter7.a.UserDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -14,7 +18,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,10 +44,6 @@ public class UserServiceTest {
     @Autowired
     ApplicationContext context;
     List<User> users;
-
-
-    @Autowired
-    private TxTest tt;
 
     @BeforeEach
     public void setUp() {
@@ -234,8 +233,5 @@ public class UserServiceTest {
         public void update(User user) {
             updated.add(user);
         }
-    }
-
-    static class TestUserServiceException extends RuntimeException {
     }
 }
